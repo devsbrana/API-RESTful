@@ -1,0 +1,10 @@
+Arquixo .TXT para Insomnia
+
+{
+ "nome": "Dragonite",
+ "altura": 2.2,
+ "peso": 210.0,
+ "categoria": "Dragão"
+ "dataDaCaptura": "2025-08-20"
+}
+
