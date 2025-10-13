@@ -4,6 +4,7 @@ import br.com.fiap.to.PokemonTO;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -11,13 +12,51 @@ import java.util.ArrayList;
 public class PokemonDAO {
     public ArrayList<PokemonTO> findAll() {
         ArrayList<PokemonTO> pokemons = new ArrayList<>();
-        PokemonTO pokemon = new PokemonTO(1L, "Charmander", 2.50, 5.0, "Fogo", LocalDate.parse("2025-02-10"));
-        pokemons.add(pokemon);
-        pokemon = new PokemonTO(2L, "Squirtle", 2.60, 6.0, "Água", LocalDate.now());
-        pokemons.add(pokemon);
-        pokemon = new PokemonTO(3L, "Bulbasaur", 5.00, 15.00, "Planta", LocalDate.now().plusYears(2));
-        pokemons.add(pokemon);
+        String sql = "select * from ddd_pokemons order by codigo";
+        try(PreparedStatement ps = ConnectionFactory.getConnection().prepareStatement(sql)){
+            ResultSet rs = ps.executeQuery();
+            if (rs != null){
+                while (rs.next()){
+                    PokemonTO pokemon  = new PokemonTO();
+                    pokemon.setCodigo(rs.getLong("codigo"));
+                    pokemon.setNome(rs.getString("nome"));
+                    pokemon.setAltura(rs.getDouble("altura"));
+                    pokemon.setPeso(rs.getDouble("peso"));
+                    pokemon.setDataDaCaptura(rs.getDate("data_da_captura").toLocalDate());
+                    pokemons.add(pokemon);
+                }
+            } else{
+                return null;
+            }
+        } catch (SQLException e){
+            System.out.printf("Erro ao selecionar todos os pokemons da tabela: " + e.getMessage());
+        }
         return pokemons;
+    }
+
+    public PokemonTO findByCodigo(Long codigo) {
+        PokemonTO pokemon = new PokemonTO();
+        String sql = "select * from ddd_pokemons where codigo = ?";
+        try (PreparedStatement ps = ConnectionFactory.getConnection().prepareStatement(sql))
+        {
+            ps.setLong(1, codigo);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                pokemon.setCodigo(rs.getLong("codigo"));
+                pokemon.setNome(rs.getString("nome"));
+                pokemon.setAltura(rs.getDouble("altura"));
+                pokemon.setPeso(rs.getDouble("peso"));
+                pokemon.setCategoria(rs.getString("categoria"));
+                pokemon.setDataDaCaptura(rs.getDate("data_da_captura").toLocalDate());
+            } else  {
+                return null;
+            }
+        } catch (SQLException e) {
+            System.out.println("Erro na consulta: " + e.getMessage());
+        } finally {
+            ConnectionFactory.closeConnection();
+        }
+        return pokemon;
     }
 
     public PokemonTO save(PokemonTO pokemon) {

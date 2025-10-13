@@ -14,6 +14,12 @@ public class PokemonBO {
         return pokemonDAO.findAll();
     }
 
+    public PokemonTO findByCodigo(Long codigo) {
+        pokemonDAO = new PokemonDAO();
+        // aqui se implementa as regas de negócios
+        return pokemonDAO.findByCodigo(codigo);
+    }
+
     public PokemonTO save(PokemonTO pokemon) {
         pokemonDAO = new PokemonDAO();
         if (pokemon.getDataDaCaptura().isAfter(LocalDate.now().plusDays(1))) {
