@@ -1,19 +1,27 @@
 package br.com.fiap.to;
 
+import jakarta.validation.constraints.*;
+
 import java.time.LocalDate;
 
 public class RemedioTO {
     // Atributos
     private Long codigo;
+    @NotBlank //Não ser vazio ou nulo, so funciona pra String
     private String nome;
+    @NotNull //Não ser vazio ou nulo, so funciona pra Número
+    @PositiveOrZero //Positivo ou Zero
     private Double preco;
+    @PastOrPresent //Data no passado ou presente
     private LocalDate dataDeFabricacao;
+    @FutureOrPresent //Data no futuro ou presente
     private LocalDate dataDeValidade;
 
     // Construtores vazio
     public RemedioTO() {
     }
 
+    // Construtor com passagem de paramêtro
     public RemedioTO(Long codigo, String nome, Double preco, LocalDate dataDeFabricacao, LocalDate dataDeValidade) {
         this.codigo = codigo;
         this.nome = nome;
