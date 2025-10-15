@@ -29,4 +29,10 @@ public class RemedioBO {
         return remedioDAO.save(remedio);
     }
 
+    public boolean delete(Long codigo) {
+         remedioDAO = new RemedioDAO();
+        // aqui se implementa a regra de negócios
+        return remedioDAO.delete(codigo);
+    }
+
 }

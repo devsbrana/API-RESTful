@@ -27,4 +27,11 @@ public class PokemonBO {
         }
         return pokemonDAO.save(pokemon);
     }
+
+    public boolean delete(Long codigo) {
+        pokemonDAO = new PokemonDAO();
+        // aqui se implementa a regra de negócios
+        return pokemonDAO.delete(codigo);
+    }
+
 }

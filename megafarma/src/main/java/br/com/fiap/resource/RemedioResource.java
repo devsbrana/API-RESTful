@@ -56,4 +56,17 @@ public class RemedioResource {
         response.entity(resultado);
         return response.build();
     }
+
+    @DELETE
+    @Path("/{codigo}")
+    public Response delete(@PathParam("codigo") Long codigo) {
+        Response.ResponseBuilder response = null;
+        if (remedioBO.delete(codigo)) {
+            response = Response.status(204); // 204 - NO CONTENT
+        } else {
+            response = Response.status(404); // 404 - NOT FOUND
+        }
+        return response.build();
+    }
+
 }
