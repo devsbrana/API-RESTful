@@ -88,10 +88,31 @@ public class RemedioDAO {
             ps.setLong(1, codigo);
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.out.println("Erro ao salvar: " + e.getMessage());
+            System.out.println("Erro ao excluir: " + e.getMessage());
         } finally {
             ConnectionFactory.closeConnection();
         }
         return false;
+    }
+    public RemedioTO update(RemedioTO remedio) {
+        String sql = "update ddd_remedios set nome=?, preco=?, data_de_fabricacao=?, data_de_validade=? where codigo=?";
+        try (PreparedStatement ps = ConnectionFactory.getConnection().prepareStatement(sql))
+        {
+            ps.setString(1, remedio.getNome());
+            ps.setDouble(2, remedio.getPreco());
+            ps.setDate(3, Date.valueOf(remedio.getDataDeFabricacao()));
+            ps.setDate(4, Date.valueOf(remedio.getDataDeValidade()));
+            ps.setLong(5, remedio.getCodigo());
+            if (ps.executeUpdate() > 0) {
+                return remedio;
+            } else {
+                return null;
+            }
+        } catch (SQLException e) {
+            System.out.println("Erro ao atualizar: " + e.getMessage());
+        } finally {
+            ConnectionFactory.closeConnection();
+        }
+        return null;
     }
 }

@@ -34,4 +34,9 @@ public class PokemonBO {
         return pokemonDAO.delete(codigo);
     }
 
+    public PokemonTO update(PokemonTO pokemon) {
+        pokemonDAO = new PokemonDAO();
+        // aqui se implementa a regra de negócios
+        return pokemonDAO.update(pokemon);
+    }
 }
